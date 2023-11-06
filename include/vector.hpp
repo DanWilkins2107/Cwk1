@@ -10,8 +10,8 @@
 //////////////////////////////////////////////////////////////
 
 double* AllocateVector(int n);
-double* PrintVector(double* vector,int n);
-double* ScaleVector(double* vector,double scaling,int n);
+void PrintVector(double* vector,int n);
+void ScaleVector(double* vector,double scaling,int n);
 void CopyVector(double* vector,double* copied_vector,int n);
 void SubtractVectors(double* vec1,double* vec2,int n);
 void CombineVectors(double* vector1,double* vector2,double scale,int n);

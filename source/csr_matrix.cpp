@@ -6,13 +6,6 @@ csr_matrix SetupMatrixA();
 void DeallocateCSRMatrix(csr_matrix matrix);
 void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVector);
 
-int main()
-{
-    csr_matrix matrix_a = SetupMatrixA();
-    double* test_vec1;
-    MultiplyMatrixVector(matrix_a, test_vec1, test_vec1);
-}
-
 // Function to set up and return matrix A.
 csr_matrix SetupMatrixA()
 {
@@ -28,22 +21,24 @@ csr_matrix SetupMatrixA()
     matrix_a.matrix_entries = new double[7];
     matrix_a.column_no = new int[7];
     matrix_a.row_start = new int[5];
-    
 
     // Setting Up Values
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         matrix_a.matrix_entries[i] = matrix_entries[i];
     }
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         matrix_a.column_no[i] = column_no[i];
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++)
+    {
         matrix_a.row_start[i] = row_start[i];
     }
 
-    matrix_a.number_of_rows = 4;
+    matrix_a.no_rows = 4;
 
     // Returning matrix_a
     return matrix_a;
@@ -62,23 +57,24 @@ void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVec
 {
     // Convert CSR matrix to regular form matrix
     double** regular_matrix;
-    regular_matrix = new double*[matrix.number_of_rows];
-    for (int i = 0; i < matrix.number_of_rows; i++)
+    regular_matrix = new double*[matrix.no_rows];
+    for (int i = 0; i < matrix.no_rows; i++)
     {
-        regular_matrix[i] = new double[matrix.number_of_rows];
+        regular_matrix[i] = new double[matrix.no_rows];
         for (int j = matrix.row_start[i]; j < matrix.row_start[i + 1]; j++)
         {
             regular_matrix[i][matrix.column_no[j]] = matrix.matrix_entries[j];
         }
     }
 
-    // Print Regular Matrix
-    for (int i = 0; i < matrix.number_of_rows; i++)
+    // Perform Matrix Multiplication
+    for (int i = 0; i < matrix.no_rows; i++)
     {
-        for (int j = 0; j < matrix.number_of_rows; j++)
+        double count = 0;
+        for (int j = 0; j < matrix.no_rows; j++)
         {
-            std::cout << regular_matrix[i][j] << " ";
+            count += regular_matrix[i][j] * vector[j];
         }
-        std::cout << std::endl;
+        productVector[i] = count;
     }
 }

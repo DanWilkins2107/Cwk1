@@ -11,6 +11,6 @@ void PerformArnoldiIteration(csr_matrix& matrix, dense_matrix& krylov_matrix, in
 void ComputeGivensRotations(dense_matrix& givensRotations, double rho, double sigma);
 void ApplyGivensRotations(dense_matrix& givensRotations,double* vector);
 double* PerformGMRESRestarted(csr_matrix& matrix, double* rhsVector, double* x0,
-	int max_iterations, double tol, int restart=100);
+	int max_iterations=10000, double tol=1.0e-10, int restart=100);
 
 #endif

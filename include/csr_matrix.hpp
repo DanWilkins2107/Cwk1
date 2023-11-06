@@ -5,10 +5,11 @@ struct csr_matrix
 {
     // CSR format matrix
 	double* matrix_entries;
-    double* column_no;
-    double* row_start;
+    int* column_no;
+    int* row_start;
+
     // Explicitly defined number of rows 
-    int number_of_rows;
+    int no_rows;
 };
 
 #endif
