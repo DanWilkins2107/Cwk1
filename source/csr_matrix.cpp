@@ -1,10 +1,14 @@
 #include "../include/csr_matrix.hpp"
+#include <cassert>
+#include <fstream>
 #include <iostream>
+#include <string>
 
 // Function Declarations
 csr_matrix SetupMatrixA();
 void DeallocateCSRMatrix(csr_matrix matrix);
 void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVector);
+void ReadMatrixAndVector(std::string matrix_filename, std::string vector_filename);
 
 // Function to set up and return matrix A.
 csr_matrix SetupMatrixA()
@@ -77,4 +81,19 @@ void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVec
         }
         productVector[i] = count;
     }
+}
+
+void ReadMatrixAndVector(std::string matrix_filename, std::string vector_filename)
+{
+    // Open the File
+    std::ifstream read_file(matrix_filename);
+    assert(read_file.is_open());
+    int file_length_count = 0;
+    std::string dummy_var;
+    while (!read_file.eof()) {
+        read_file >> dummy_var;
+        file_length_count++;
+    }
+    std::cout << file_length_count;
+    read_file.close();
 }

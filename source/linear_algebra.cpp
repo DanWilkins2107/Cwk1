@@ -28,10 +28,9 @@ void PerformArnoldiIteration(csr_matrix& matrix, dense_matrix& krylov_matrix, in
     // Allocate Memory and find q_kplus1
     double* q_kplus1;
     q_kplus1 = new double[k];
-
-    // Perform multiplication of A and q_k
     MultiplyMatrixVector(matrix, q_k, q_kplus1);
 
+    // Fill hessenberg array and edit q_kplus1
     for (int i = 0; i < k; i++)
     {
         hessenberg[i] = ComputeDotProduct(q_kplus1, q_k, krylov_matrix.no_cols);
