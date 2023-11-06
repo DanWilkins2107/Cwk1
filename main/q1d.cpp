@@ -29,7 +29,7 @@ int main()
         std::cout << product_Ax[i] << std::endl;
     }
 
-    // Deallocate Memory
+    // Deallocate memory
     DeallocateCSRMatrix(matrix_a);
     delete[] vec_x;
     delete[] product_Ax;
