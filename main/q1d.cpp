@@ -1,4 +1,3 @@
-#include "../include/csr_matrix.hpp"
 #include "../source/csr_matrix.cpp"
 
 int main()
