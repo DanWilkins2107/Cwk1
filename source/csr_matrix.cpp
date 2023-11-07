@@ -8,7 +8,8 @@
 csr_matrix SetupMatrixA();
 void DeallocateCSRMatrix(csr_matrix matrix);
 void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVector);
-void ReadMatrixAndVector(std::string matrix_filename, std::string vector_filename);
+csr_matrix ReadMatrix(std::string matrix_filename);
+double* ReadVector(std::string vector_filename);
 
 // Function to set up and return matrix A.
 csr_matrix SetupMatrixA()
@@ -83,17 +84,71 @@ void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVec
     }
 }
 
-void ReadMatrixAndVector(std::string matrix_filename, std::string vector_filename)
+csr_matrix ReadMatrix(std::string matrix_filename)
 {
     // Open the File
     std::ifstream read_file(matrix_filename);
     assert(read_file.is_open());
-    int file_length_count = 0;
-    std::string dummy_var;
-    while (!read_file.eof()) {
-        read_file >> dummy_var;
-        file_length_count++;
+
+    // Find the number of rows and the number of nonzeros
+    std::string current_string;
+    int no_rows;
+    int no_nonzeros;
+    read_file >> current_string >> current_string >> no_rows;
+    read_file >> current_string >> current_string >> no_nonzeros;
+
+    // Create CSR Matrix
+    csr_matrix matrix;
+    matrix.no_rows = no_rows;
+    matrix.row_start = new int[no_rows + 1];
+    matrix.column_no = new int[no_nonzeros];
+    matrix.matrix_entries = new double[no_nonzeros];
+
+    // Add values to row_start
+    read_file >> current_string;
+    for (int i = 0; i < no_rows + 1; i++)
+    {
+        read_file >> matrix.row_start[i];
     }
-    std::cout << file_length_count;
+
+    // Add values to column_no
+    read_file >> current_string;
+    for (int i = 0; i < no_nonzeros; i++)
+    {
+        read_file >> matrix.column_no[i];
+    }
+
+    // Add values to matrix_entries
+    read_file >> current_string;
+    for (int i = 0; i < no_nonzeros; i++)
+    {
+        read_file >> matrix.matrix_entries[i];
+    }
+
+    // Close File
     read_file.close();
+    return matrix;
+}
+
+double* ReadVector(std::string vector_filename) {
+    // Open the file
+    std::ifstream read_file(vector_filename);
+    assert(read_file.is_open());
+
+    // Find vector length
+    std::string current_string;
+    int vector_length;
+    read_file >> current_string >> current_string >> vector_length;
+
+    // Allocate memory to new vector
+    double* vector;
+    vector = new double[vector_length];
+
+    // Fill vector
+    read_file >> current_string >> current_string;
+    for (int i = 0; i < vector_length; i++) {
+        read_file >> vector[i];
+    }
+
+    return vector;
 }
