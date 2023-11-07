@@ -130,7 +130,8 @@ csr_matrix ReadMatrix(std::string matrix_filename)
     return matrix;
 }
 
-double* ReadVector(std::string vector_filename) {
+double* ReadVector(std::string vector_filename)
+{
     // Open the file
     std::ifstream read_file(vector_filename);
     assert(read_file.is_open());
@@ -146,7 +147,8 @@ double* ReadVector(std::string vector_filename) {
 
     // Fill vector
     read_file >> current_string >> current_string;
-    for (int i = 0; i < vector_length; i++) {
+    for (int i = 0; i < vector_length; i++)
+    {
         read_file >> vector[i];
     }
 
