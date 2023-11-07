@@ -1,5 +1,8 @@
 #include "../source/csr_matrix.cpp"
 
 int main() {
-    ReadMatrixAndVector("../matrix1.dat","../vector2.dat");
+    csr_matrix matrix;
+    matrix = ReadMatrix("../matrix1.dat");
+    double* vector;
+    vector = ReadVector("../vector1.dat");
 }
