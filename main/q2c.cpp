@@ -1,4 +1,5 @@
-#include "../source/linear_algebra.cpp"
+#include "linear_algebra.hpp"
+#include "csr_matrix.hpp"
 #include <iostream>
 
 int main()
@@ -20,7 +21,7 @@ int main()
     for (int i = 0; i < 64; i++) {
         x_0[i] = 0.5;
     }
-
+    
     // Perform GMRES algorithm
     double* approximation;
     approximation = PerformGMRESRestarted(matrix_a, vector_b, x_0);

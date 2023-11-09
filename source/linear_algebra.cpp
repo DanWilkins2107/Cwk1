@@ -4,7 +4,6 @@
 // Module that implements the GMRES algorithm
 //////////////////////////////////////////////////////////////
 
-#include "csr_matrix.cpp"
 #include "csr_matrix.hpp"
 #include "dense_matrix.hpp"
 #include "linear_algebra.hpp"
@@ -23,11 +22,11 @@ void PerformArnoldiIteration(csr_matrix& matrix, dense_matrix& krylov_matrix, in
     for (int i = 0; i < krylov_matrix.no_cols; i++)
     {
         q_k[i] = krylov_matrix.matrix_entries[krylov_matrix.no_rows - 1][i];
-    }
+    } 
 
     // Allocate Memory and find q_kplus1
     double* q_kplus1;
-    q_kplus1 = new double[k];
+    q_kplus1 = new double[krylov_matrix.no_cols];
     MultiplyMatrixVector(matrix, q_k, q_kplus1);
 
     // Fill hessenberg array and edit q_kplus1

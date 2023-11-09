@@ -1,6 +1,7 @@
 #ifndef linear_algebra_header
 #define linear_algebra_header
 
+#include "csr_matrix.hpp"
 #include "vector.hpp"
 #include "dense_matrix.hpp"
 

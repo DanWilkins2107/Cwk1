@@ -1,15 +1,8 @@
-#include "../include/csr_matrix.hpp"
+#include "csr_matrix.hpp"
 #include <cassert>
 #include <fstream>
 #include <iostream>
 #include <string>
-
-// Function Declarations
-csr_matrix SetupMatrixA();
-void DeallocateCSRMatrix(csr_matrix matrix);
-void MultiplyMatrixVector(csr_matrix& matrix, double* vector, double* productVector);
-csr_matrix ReadMatrix(std::string matrix_filename);
-double* ReadVector(std::string vector_filename);
 
 // Function to set up and return matrix A.
 csr_matrix SetupMatrixA()

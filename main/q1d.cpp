@@ -1,4 +1,5 @@
-#include "../source/csr_matrix.cpp"
+#include "csr_matrix.hpp"
+#include <iostream>
 
 int main()
 {
