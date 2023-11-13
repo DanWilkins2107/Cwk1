@@ -601,3 +601,30 @@ void PrintMesh(mesh meshData)
 	}
 
 }
+
+void OutputSolution(double* solution, mesh mesh_data, std::string filename)
+{
+		//Function to output a solution vector as matrix for reading into
+		//Matlab or Python
+
+		std::ofstream outputFile;
+		outputFile.open(filename);
+
+    int no_cells = mesh_data.no_cells;
+
+		for (int k=0;k < no_cells;k++)
+		{
+				for (int l=0;l < 4; l++)
+				{
+						outputFile << mesh_data.coordinates.matrix_entries[mesh_data.cells[k].nodes[l]][0] << " ";
+            outputFile << mesh_data.coordinates.matrix_entries[mesh_data.cells[k].nodes[l]][1] << " ";
+        }
+
+        outputFile << solution[k];
+
+				outputFile << std::endl;
+		}
+
+		outputFile.close();
+
+}

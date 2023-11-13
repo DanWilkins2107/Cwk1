@@ -33,5 +33,6 @@ mesh ConstructLShapedMesh(int Nx, int Ny, double a, double b, double c, double d
 void PrintMesh(mesh meshData);
 void DeallocateMesh(mesh meshData);
 void SetEdgeInformation(cell_information& cell,double hx, double hy);
+void OutputSolution(double* solution, mesh mesh_data, std::string filename);
 
 #endif
