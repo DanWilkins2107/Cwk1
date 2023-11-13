@@ -147,3 +147,19 @@ double* ReadVector(std::string vector_filename)
 
     return vector;
 }
+
+void PrintCSRMatrix(csr_matrix matrix) {
+    std::cout << "Number Rows" << std::endl;
+    std::cout << matrix.no_rows << std::endl;
+    std::cout << "Number Nonzeros" << std::endl;
+    // Print Matrix Length Here
+    std::cout << "row_start";
+    for (int i = 0; i < matrix.no_rows + 1; i++) {
+        std::cout << matrix.row_start << std::endl;
+    }
+    std::cout << "column_no" << std::endl;
+    // For loop over Matrix Array
+
+    std::cout << "matrix_entries" << std::endl;
+    // For loop over matrix_entries
+}

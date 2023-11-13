@@ -18,5 +18,6 @@ void DeallocateCSRMatrix(csr_matrix matrix);
 csr_matrix ReadMatrix(std::string matrix_filename);
 double* ReadVector(std::string vector_filename);
 csr_matrix SetupMatrixA();
+void PrintCSRMatrix(csr_matrix matrix);
 
 #endif
