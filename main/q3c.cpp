@@ -21,8 +21,4 @@ int main () {
 
     //Print mesh
     PrintCSRMatrix(mesh_matrix);
-
-
-
-    
 }

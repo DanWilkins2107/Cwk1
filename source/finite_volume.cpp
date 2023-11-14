@@ -1,18 +1,16 @@
 #include "csr_matrix.hpp"
 #include "mesh.hpp"
 
-csr_matrix CreateMatrixStorageFromMesh(mesh mesh);
-double* CreateVectorStorageFromMesh(mesh mesh);
-
 csr_matrix CreateMatrixStorageFromMesh(mesh mesh)
 {
     // Creating csr_matrix
-    csr_matrix matrix_a;
+    csr_matrix matrix;
 
     // Working out how many non-zero entries matrix_a will have.
     int nonzero_entries = 0;
     for (int i = 0; i < mesh.no_cells; i++)
     {
+        //Add one for self
         nonzero_entries++;
         for (int j = 0; j < 4; j++)
         {
@@ -24,13 +22,31 @@ csr_matrix CreateMatrixStorageFromMesh(mesh mesh)
     }
 
     // Allocating Memory
-    matrix_a.no_rows = mesh.no_cells;
-    matrix_a.matrix_entries = new double[nonzero_entries];
-    matrix_a.column_no = new int[nonzero_entries];
-    matrix_a.row_start = new int[mesh.no_cells + 1];
+    matrix.no_rows = mesh.no_cells;
+    matrix.matrix_entries = new double[nonzero_entries];
+    matrix.column_no = new int[nonzero_entries];
+    matrix.row_start = new int[mesh.no_cells + 1];
 
+    // Add values to column_no and row_start
+    int total_entries = 0;
+    matrix.row_start[0] = 0;
+    for (int i = 0; i < mesh.no_cells; i++)
+    {
+        matrix.column_no[total_entries] = i;
+        total_entries++;
+        for (int j = 0; j < 4; j++)
+        {
+            if (mesh.cells[i].neighbours[j] != -1)
+            {
+                matrix.column_no[total_entries] = j;
+                total_entries++;
+            }
+        }
+        matrix.row_start[i + 1] = total_entries;
+    }
+    
     // Returning the matrix
-    return matrix_a;
+    return matrix;
 }
 
 double* CreateVectorStorageFromMesh(mesh mesh)
