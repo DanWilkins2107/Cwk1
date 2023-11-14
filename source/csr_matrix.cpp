@@ -155,24 +155,25 @@ void PrintCSRMatrix(csr_matrix matrix) {
 
     // Print number of nonzero entries in matrix
     std::cout << "Number Nonzeros" << std::endl;
-    int no_nonzeros = matrix.row_start[matrix.no_rows + 1];
+
+    int no_nonzeros = matrix.row_start[matrix.no_rows];
     std::cout << no_nonzeros << std::endl;
     
     // Print the row start values
-    std::cout << "row_start";
+    std::cout << "row_start" << std::endl;
     for (int i = 0; i < matrix.no_rows + 1; i++) {
-        std::cout << matrix.row_start << std::endl;
+        std::cout << matrix.row_start[i] << std::endl;
     }
     
     // Print the column number values
     std::cout << "column_no" << std::endl;
     for (int i = 0; i < no_nonzeros; i++) {
-        std::cout << matrix.column_no[i];
+        std::cout << matrix.column_no[i] << std::endl;
     }
 
     // Print the nonzero entries
     std::cout << "matrix_entries" << std::endl;
     for (int i = 0; i < no_nonzeros; i++) {
-        std::cout << matrix.column_no[i];
+        std::cout << matrix.matrix_entries[i] << std::endl;
     }
 }
