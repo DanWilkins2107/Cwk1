@@ -6,5 +6,7 @@
 
 csr_matrix CreateMatrixStorageFromMesh(mesh mesh);
 double* CreateVectorStorageFromMesh(mesh mesh);
+csr_matrix PopulateMatrixA(mesh input_mesh, double (*f)(double, double), double (*g)(double, double), double* (*b)(double, double))
+double* PopulateVectorF(mesh input_mesh, double (*f)(double, double), double (*g)(double, double), double* (*b)(double, double))
 
 #endif
