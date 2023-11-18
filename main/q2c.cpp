@@ -1,5 +1,6 @@
 #include "linear_algebra.hpp"
 #include "csr_matrix.hpp"
+
 #include <iostream>
 
 int main()
@@ -7,6 +8,7 @@ int main()
     // Read in A and x
     csr_matrix matrix_a;
     matrix_a = ReadMatrix("../matrix2.dat");
+    std::cout << "reached 1" << std::endl;
     double* vector_x;
     vector_x = ReadVector("../vector2.dat");
 
@@ -32,7 +34,7 @@ int main()
     error = NormVector(vector_x, 64);
     std::cout << "The error is " << error;
 
-    // Deallocate Memory
+    // Deallocate memory
     DeallocateCSRMatrix(matrix_a);
     DeallocateVector(vector_x);
     DeallocateVector(vector_b);

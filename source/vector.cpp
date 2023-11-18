@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cassert>
 
+
 //////////////////////////////////////////////////////////////
 double* AllocateVector(int n)
 //Allocates a double precision vector and sets all entries to zero

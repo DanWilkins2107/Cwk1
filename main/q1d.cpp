@@ -1,4 +1,5 @@
 #include "csr_matrix.hpp"
+
 #include <iostream>
 
 int main()
@@ -7,7 +8,7 @@ int main()
     csr_matrix matrix_a = SetupMatrixA();
 
     // Setup vector x as given in question
-    double x[] = {4, -1, 3, 6};
+    double x[4] = {4, -1, 3, 6};
     double* vec_x;
     vec_x = new double[4];
     for (int i = 0; i < 4; i++)

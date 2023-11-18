@@ -6,8 +6,8 @@
 
 #include "csr_matrix.hpp"
 #include "dense_matrix.hpp"
-#include "linear_algebra.hpp"
 #include "vector.hpp"
+#include "linear_algebra.hpp"
 
 //////////////////////////////////////////////////////////////
 
@@ -142,7 +142,7 @@ double* PerformGMRESRestarted(csr_matrix& matrix, double* rhsVector, double* x0,
             DeallocateVector(y_solution);
 
             iteration_count++;
-            std::cout << "||r_" << iteration_count << "|| = " << error << std::endl;
+            // std::cout << "||r_" << iteration_count << "|| = " << error << std::endl;
         }
 
         DeleteDenseMatrix(krylov_matrix);

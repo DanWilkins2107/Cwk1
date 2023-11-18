@@ -2,66 +2,19 @@
 #include "finite_volume.hpp"
 #include "linear_algebra.hpp"
 #include "mesh.hpp"
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
-// All functions needed for Q4b
-double return_1(double x, double y)
-{
-    return 1;
-}
-
-double return_0(double x, double y)
-{
-    return 0;
-}
-
-double f2(double x, double y)
-{
-    return 8.0 * pow(M_PI, 2) * cos(2.0 * M_PI * x) * cos(2.0 * M_PI * y);
-}
-
-double g2(double x, double y)
-{
-    return cos(2.0 * M_PI * x) * cos(2.0 * M_PI * y);
-}
-
-double g4(double x, double y)
-{
-    if (x == 0 && 0.25 < y < 0.75)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-double* return_0_array(double x, double y)
-{
-    double* array;
-    array = new double[2];
-    array[0] = 0;
-    array[1] = 0;
-    return array;
-}
-
-double* return_10_array(double x, double y)
-{
-    double* array;
-    array = new double[2];
-    array[0] = 10;
-    array[1] = 10;
-    return array;
-}
-
-double* b4(double x, double y)
-{
-    double* array;
-    array = new double[2];
-    array[0] = (50.0 * y) / sqrt(pow(x, 2) + pow(y, 2));
-    array[1] = (-50.0 * x) / sqrt(pow(x, 2) + pow(y, 2));
-    return array;
-}
+double return_1(double x, double y);
+double return_0(double x, double y);
+double f2(double x, double y);
+double g2(double x, double y);
+double g4(double x, double y);
+double* return_0_array(double x, double y);
+double* return_10_array(double x, double y);
+double* b4(double x, double y);
 
 int main()
 {
@@ -80,13 +33,18 @@ int main()
     std::cout << "How many cells in the y direction?" << std::endl;
     std::cin >> number_of_cells_y;
 
-    // Assert if L-shaped mesh been chosen, the number of cells in each direction is valid
+    // Assert the number_of cells chosen is valid
+    assert(number_of_cells_x % 2 == 0);
+    assert(number_of_cells_y % 2 == 0);
     if (problem_no == 2 || problem_no == 4)
     {
-        assert(number_of_cells_x % 2 == 0);
-        assert(number_of_cells_y % 2 == 0);
         assert(number_of_cells_x >= 4);
         assert(number_of_cells_y >= 4);
+    }
+    else
+    {
+        assert(number_of_cells_x >= 2);
+        assert(number_of_cells_y >= 2);
     }
 
     // Initialize problem
@@ -153,5 +111,69 @@ int main()
     }
 
     // Print maxiumum value in u_h
-    std::cout << "The maximum value of u_h is" << max_value << std::endl;
+    std::cout << "The maximum value of u_h is " << max_value << std::endl;
+
+    // Deallocate memory
+    DeallocateVector(vector_f);
+    DeallocateCSRMatrix(matrix_a);
+    DeallocateVector(x_0);
+    DeallocateVector(u_h);
+    DeallocateMesh(chosen_mesh);
+}
+
+// All functions needed for Q4b
+double return_1(double x, double y)
+{
+    return 1;
+}
+
+double return_0(double x, double y)
+{
+    return 0;
+}
+
+double f2(double x, double y)
+{
+    return 8.0 * pow(M_PI, 2) * cos(2.0 * M_PI * x) * cos(2.0 * M_PI * y);
+}
+
+double g2(double x, double y)
+{
+    return cos(2.0 * M_PI * x) * cos(2.0 * M_PI * y);
+}
+
+double g4(double x, double y)
+{
+    if (x == 0 && 0.25 < y < 0.75)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+double* return_0_array(double x, double y)
+{
+    double* array;
+    array = new double[2];
+    array[0] = 0;
+    array[1] = 0;
+    return array;
+}
+
+double* return_10_array(double x, double y)
+{
+    double* array;
+    array = new double[2];
+    array[0] = 10;
+    array[1] = 10;
+    return array;
+}
+
+double* b4(double x, double y)
+{
+    double* array;
+    array = new double[2];
+    array[0] = (50.0 * y) / sqrt(pow(x, 2) + pow(y, 2));
+    array[1] = (-50.0 * x) / sqrt(pow(x, 2) + pow(y, 2));
+    return array;
 }
