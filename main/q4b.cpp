@@ -1,5 +1,6 @@
 #include "csr_matrix.hpp"
 #include "finite_volume.hpp"
+#include "linear_algebra.hpp"
 #include "mesh.hpp"
 #include <cassert>
 #include <cmath>
@@ -80,7 +81,8 @@ int main()
     std::cin >> number_of_cells_y;
 
     // Assert if L-shaped mesh been chosen, the number of cells in each direction is valid
-    if (problem_no == 2 || problem_no == 4) {
+    if (problem_no == 2 || problem_no == 4)
+    {
         assert(number_of_cells_x % 2 == 0);
         assert(number_of_cells_y % 2 == 0);
         assert(number_of_cells_x >= 4);
@@ -128,8 +130,28 @@ int main()
     double* vector_f = PopulateVectorF(chosen_mesh, f, g, b);
     csr_matrix matrix_a = PopulateMatrixA(chosen_mesh, vector_f, f, g, b);
 
-    // Print vecf check
-    for (int i = 0; i < chosen_mesh.no_cells; i++) {
-        std::cout << vector_f[i] << std::endl;
+    // Setup guess vector
+    double* x_0;
+    x_0 = new double[chosen_mesh.no_cells];
+    for (int i = 0; i < chosen_mesh.no_cells; i++)
+    {
+        x_0[i] = 0.5;
     }
+
+    // Find u_h
+    double* u_h;
+    u_h = PerformGMRESRestarted(matrix_a, vector_f, x_0);
+
+    // Iterate over and find maximum value
+    double max_value = u_h[0];
+    for (int i = 1; i < chosen_mesh.no_cells; i++)
+    {
+        if (u_h[i] > max_value)
+        {
+            max_value = u_h[i];
+        }
+    }
+
+    // Print maxiumum value in u_h
+    std::cout << "The maximum value of u_h is" << max_value << std::endl;
 }

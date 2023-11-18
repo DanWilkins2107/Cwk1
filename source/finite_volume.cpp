@@ -63,33 +63,91 @@ double* CreateVectorStorageFromMesh(mesh input_mesh)
 csr_matrix PopulateMatrixA(mesh input_mesh, double* vector_f, double (*f)(double, double), double (*g)(double, double), double* (*b)(double, double))
 {
     csr_matrix matrix_a = CreateMatrixStorageFromMesh(input_mesh);
+
     for (int i = 0; i < input_mesh.no_cells; i++)
     {
+        int matrix_entries_added = 0;
         for (int j = 0; j < 4; j++)
         {
-            double direction_term = ComputeDotProduct(b(input_mesh.cells[i].edge_centres[j][0], input_mesh.cells[i].edge_centres[j][1]), input_mesh.cells[i].edge_normals[j], 2);
+            double x_n = input_mesh.cells[i].edge_centres[j][0];
+            double y_n = input_mesh.cells[i].edge_centres[j][1];
+            double direction_term = ComputeDotProduct(b(x_n, y_n), input_mesh.cells[i].edge_normals[j], 2);
             double h_numerator = input_mesh.cells[i].mesh_widths[j % 2];
             double h_denominator = input_mesh.cells[i].mesh_widths[(j + 1) % 2];
-            // Note: D in variable names refers to generalised direction
+            double u_C_coefficient = 0;
+            double u_D_coefficient = 0;
+            double u_O_coefficient = 0;
+            double constant_value = 0;
+            // D in variable names refers to direction of edge
+            // Note: O in variable names refers to opposite direction
+            // Note N: j = 0, W: j = 1, S: j = 2: E: j = 3;
             if (input_mesh.cells[i].neighbours[j] != -1)
             {
                 // Case 1: Not a Boundary
-                // Note N: j = 0, W: j = 1, S: j = 2: E: j = 3;
-                double u_C_coefficient = h_numerator / h_denominator;
-                double u_D_coefficient = -1.0 * u_C_coefficient;
-                if (direction_term >= 0) {
+
+                // Diffusive terms
+                u_C_coefficient += h_numerator / h_denominator;
+                u_D_coefficient += -1.0 * u_C_coefficient;
+
+                // Advective terms
+                if (direction_term >= 0)
+                {
                     u_C_coefficient += h_numerator * direction_term;
-                } else {
+                }
+                else
+                {
                     u_D_coefficient += h_numerator * direction_term;
                 }
+
+                // Add values from current edge
+                int number_to_add = 0;
+                for (int k = 0; k < j; k++)
+                {
+                    if (input_mesh.cells[i].neighbours[k] != -1)
+                    {
+                        number_to_add++;
+                    }
+                }
+                matrix_a.matrix_entries[matrix_a.row_start[i] + number_to_add + 1] += u_D_coefficient;
             }
             else
             {
                 // Case 2: A Boundary
+
+                // Diffusive terms
+                u_C_coefficient += 3.0 * h_numerator / h_denominator;
+                u_O_coefficient += h_numerator / (3.0 * h_denominator);
+                constant_value += (h_numerator * 8.0 * g(x_n, y_n)) / (h_denominator * 3.0);
+
+                // Advective terms
+                if (direction_term >= 0)
+                {
+                    u_C_coefficient += h_numerator * direction_term;
+                }
+                else
+                {
+                    constant_value += h_numerator * direction_term * g(x_n, y_n);
+                }
+
+                // Add values from opposite edge
+                int number_to_add = 0;
+                for (int k = 0; k < ((j + 2) % 4); k++)
+                {
+                    if (input_mesh.cells[i].neighbours[k] != -1)
+                    {
+                        number_to_add++;
+                    }
+                }
+                matrix_a.matrix_entries[matrix_a.row_start[i] + number_to_add + 1] += u_O_coefficient;
             }
+
+            // Add values to vector_f
+            vector_f[i] -= constant_value;
+
+            // Add values to diagonal of matrix a
+            matrix_a.matrix_entries[matrix_a.row_start[i]] += u_C_coefficient;
         }
     }
-
     return matrix_a;
 }
 

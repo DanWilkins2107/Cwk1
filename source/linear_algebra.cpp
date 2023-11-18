@@ -71,7 +71,7 @@ double* PerformGMRESRestarted(csr_matrix& matrix, double* rhsVector, double* x0,
 
     double error = NormVector(residual_vector, n);
 
-    std::cout << "||r_0|| = " << error << std::endl;
+    // std::cout << "||r_0|| = " << error << std::endl;
 
     dense_matrix krylov_matrix;
     dense_matrix givens_matrix;
