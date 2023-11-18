@@ -79,6 +79,14 @@ int main()
     std::cout << "How many cells in the y direction?" << std::endl;
     std::cin >> number_of_cells_y;
 
+    // Assert if L-shaped mesh been chosen, the number of cells in each direction is valid
+    if (problem_no == 2 || problem_no == 4) {
+        assert(number_of_cells_x % 2 == 0);
+        assert(number_of_cells_y % 2 == 0);
+        assert(number_of_cells_x >= 4);
+        assert(number_of_cells_y >= 4);
+    }
+
     // Initialize problem
     mesh chosen_mesh;
 
@@ -117,6 +125,11 @@ int main()
     }
 
     // Find matrices A and F
-    csr_matrix matrix_a = PopulateMatrixA(chosen_mesh, f, g, b);
     double* vector_f = PopulateVectorF(chosen_mesh, f, g, b);
+    csr_matrix matrix_a = PopulateMatrixA(chosen_mesh, vector_f, f, g, b);
+
+    // Print vecf check
+    for (int i = 0; i < chosen_mesh.no_cells; i++) {
+        std::cout << vector_f[i] << std::endl;
+    }
 }
